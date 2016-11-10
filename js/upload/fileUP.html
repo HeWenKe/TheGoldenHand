@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="jquery.fileupload-ui.css"/>
+    <style type="text/css">
+        *{
+            marign:0px;
+            padding: 0px;
+        }
+        .upbtn{
+           overflow: hidden;  width: 60px;
+           border:1px solid #ccc;
+           width:80px;
+           height:80px;
+           display: inline-block;
+            background: #cccccc;
+        }
+        .inner{
+            display:inline-block;
+        }
+
+        .daleteimage {
+            display:none;
+        }
+        ul{
+            list-style: none;
+            position: relative;
+            width: 150px;
+            height: 100px;
+            margin-left:10px;
+        }
+        #fileuploada{
+           width: 100px;
+           height: 100px;
+           display: inline-block;
+            position: relative;
+            z-index: -1;
+        }
+
+        .image_ul span{
+            display: inline-block;
+            width: 50px;
+            height: 20px;
+            border: 1px solid rgb(204, 204, 204);
+            position: absolute;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 5px;
+            margin-left:-52px;
+        }
+        #fileuploada{
+            cursor: pointer;
+        }
+        .daleteimage{
+            background:#ccc;
+            cursor: pointer;
+        }
+        label{
+            width: 100px;
+            height: 100px;
+            display: inline-block
+        }
+
+    </style>
+    <script src="jquery-1.9.1.js" type="text/javascript"></script>
+    <script type="text/javascript" src="jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="jquery.fileupload.js"></script>
+    <script type="text/javascript" src="jquery.fileupload-process.js"></script>
+    <script type="text/javascript" src="jquery.fileupload-ui.js"></script>
+</head>
+<body>
+<div class="wrapdiv">
+<div class="inner">
+
+</div>
+    <label><div class="upbtn"><input id="fileuploada" type="file" name="file"></div></label>
+</div>
+<script type="text/javascript">
+     $(function () {
+         var flag=0;
+         var flaimage=100;
+         var oimage;
+         //初始化，主要是设置上传参数，以及事件处理方法(回调函数)
+        $('#fileuploada').fileupload({
+            autoUpload: true,//是否自动上传
+            url: "http://www.gushidianjin.com/webapp/fileUpload/imgFileUpload",//上传地址
+            dataType: 'json',
+            done: function (e, data) {  //设置文件上传完毕事件的回调函数
+                oimage=data;
+                flag+=1;
+                flaimage-=1;
+                var imageHtml ='';
+                imageHtml += '<div style="display:inline-block">';
+                imageHtml += ' <ul class="image_ul"><img class="imageload" width="150px;" height="100px"  id="'+ flaimage+'">';
+                imageHtml += '<span class="daleteimage">删除</span></ul>';
+                imageHtml += ' </div>';
+                $('.inner').append(imageHtml);
+                $('#'+flaimage+'').attr('src', oimage.result.url);
+                $('#'+flaimage+'').siblings('.daleteimage').show();
+                $('.inner').show();
+                var ulLength=$('.inner>div').length ;
+                if(ulLength>=5){
+                    $('.wrapdiv>label').hide();
+                }else{
+                    $('.wrapdiv>label').show();
+                }
+                $('.daleteimage').live('click', function () {
+                    $(this).parent().children('.imageload').attr('src', '').hide();
+                    $(this).hide();
+                    $(this).parent().parent().remove();
+                    if ($('.inner').children().length == 0) {
+                        $('.inner').hide();
+                    }
+                    $('.wrapdiv>label').show();
+
+                });
+
+            }
+
+        });
+
+         $('#fileuploada').on('fileuploadstart', function (e, data) {
+             if( $('.imageload').attr('src')=='') {
+            $('.imageload').attr('src', "/images/loading.gif")} ;
+         });
+
+
+
+
+
+     });
+</script>
+</body>
+</html>

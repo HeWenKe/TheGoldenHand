@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>GSDJ管理后台</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/daterangepicker.css"/>
+    <link rel="stylesheet" href="css/mainbyhewenke.css">
+
+    <link rel="stylesheet" href="assets/layer-v2.4/layer/skin/layer.css">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="assets/vue2.0.js"></script>
+
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">GSDJ管理后台</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i
+                                class="icon-user"></i> 超级管理员 <i class="caret"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="login.html">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid" id="dataTable">
+    <div class="row-fluid">
+        <div class="span3" id="sidebar">
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li>
+                    <a href="index.html"><i class="icon-chevron-right"></i> 添加文章</a>
+                </li>
+                <li class="active">
+                    <a href="calendar.html"><i class="icon-chevron-right"></i> 所有文章</a>
+                </li>
+                <li>
+                    <a href="stats.html"><i class="icon-chevron-right"></i> 分类管理</a>
+                </li>
+                <li>
+                    <a href="form.html"><i class="icon-chevron-right"></i> 股票池</a>
+                </li>
+                <li>
+                    <a href="tables.html"><i class="icon-chevron-right"></i> 所有股票</a>
+                </li>
+                <li>
+                    <a href="buttons.html"><i class="icon-chevron-right"></i> 会员管理</a>
+                </li>
+                <li>
+                    <a href="editors.html"><i class="icon-chevron-right"></i> 意见反馈</a>
+                </li>
+                <li>
+                    <a href="interface.html"><i class="icon-chevron-right"></i> 广告管理</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--/span-->
+        <div class="span9">
+
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">所有文章</div>
+                    </div>
+                    <div class="sdfsdfsdf clearfix" style="padding:20px;">
+                        <input placeholder="开始时间" id="date-range2" v-on:focus="setDate($event)" type="text" style="width:285px; float:left; margin-right:10px;"/>
+                        <select v-model="kindsName">
+                            <option v-for="option in optionKinds" v-bind:value="option.articleTypeId">{{option.articleTypeRemarks}}</option>
+                        </select>
+                        <select v-model="attrIsVip">
+                            <option v-for="option in optionIsVip" v-bind:value="option.value">{{option.name}}</option>
+                        </select>
+                        <button v-on:click="queryArticleList(kindsName,attrIsVip)"
+                                style="float:right" type="button" class="btn btn-primary">筛选
+                        </button>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"
+                                   id="example">
+                                <thead>
+                                <tr>
+                                    <th>文章ID</th>
+                                    <th>标题</th>
+                                    <th>作者</th>
+                                    <th>分类目录</th>
+                                    <th>文章属性</th>
+                                    <th>发布日期</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="odd gradeX" v-for="ele in datas">
+                                    <td>{{ele.articleId}}</td>
+                                    <td><a href="javascript:;">{{ele.articleTitle}}</a></td>
+                                    <td>{{ele.articleAuthor}}</td>
+                                    <td>{{ele.articleTypeName}}</td>
+                                    <td>{{ele.articleType}}</td>
+                                    <td>{{ele.creatDate}}</td>
+                                    <td><a href="javascript:;" v-if="ele.kind==1" v-on:click="setTop(ele.articleId,$event)">置顶</a><a v-if="ele.kind==0" style="color:red" href="javascript:;" v-on:click="setTop(ele.articleId,$event)">取消置顶</a><a
+                                            href="javascript:;" v-on:click="editArticle(ele.articleId,$event)">编辑</a> <a
+                                            href="javascript:;" v-on:click="isDelete(ele.articleId)">删除</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="simple-pagination-pick-page" id="pagePagination">
+                                <ul class="clearfix">
+                                    <li class="first-page disabled"><i></i><i></i></li>
+                                    <li class="prev disabled"></li>
+                                    <li class="current-page"><input id="current-page" type="text"></li>
+                                    <li class="total-page">/<span id="total-page">1</span></li>
+                                    <li class="next disabled"></li>
+                                    <li class="last-page disabled"><i></i><i></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        </div>
+    </div>
+    <hr>
+    <footer>
+        <p>&copy; GSDJ 2016</p>
+    </footer>
+</div>
+<!--/.fluid-container-->
+
+<script src="vendors/jquery-1.9.1.js"></script>
+<script src="assets/layer-v2.4/layer/layer.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/scripts.js"></script>
+<!--时间插件-->
+<script src="js/moment.js"></script>
+<script src="js/jquery.daterangepicker.js"></script>
+<script src="js/mainbyhewenke.js"></script>
+<!--时间插件 end-->
+<script>
+
+
+</script>
+</body>
+
+</html>

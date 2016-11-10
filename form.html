@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="no-js">
+    
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>GSDJ管理后台</title>
+        <!-- Bootstrap -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+        <link href="assets/styles.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" href="assets/layer-v2.4/layer/skin/layer.css">
+        <link rel="stylesheet" href="css/daterangepicker.css"/>
+        <script src="assets/vue2.0.js"></script>
+    </head>
+    <style>
+        .gradeX   input.onborder{
+            border:1px solid #ccc;
+        }
+        .gradeX   input.noborder{
+            border:none;
+        }
+        .table th, .table td {
+             padding: 0;
+        }
+        input, textarea, .uneditable-input {
+            width: 80%;
+        }
+
+    </style>
+    
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">GSDJ管理后台</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                            <li class="dropdown">
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> 超级管理员 <i class="caret"></i>
+
+                                </a>
+                                <ul class="dropdown-menu">
+                                   
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a tabindex="-1" href="login.html">退出</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3" id="sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                        <li>
+                            <a href="index.html"><i class="icon-chevron-right"></i> 添加文章</a>
+                        </li>
+                        <li>
+                            <a href="calendar.html"><i class="icon-chevron-right"></i> 所有文章</a>
+                        </li>
+                        <li>
+                            <a href="stats.html"><i class="icon-chevron-right"></i> 分类管理</a>
+                        </li>
+                        <li class="active">
+                            <a href="form.html"><i class="icon-chevron-right"></i> 股票池</a>
+                        </li>
+                        <li>
+                            <a href="tables.html"><i class="icon-chevron-right"></i> 所有股票</a>
+                        </li>
+                        <li>
+                            <a href="buttons.html"><i class="icon-chevron-right"></i> 会员管理</a>
+                        </li>
+                        <li>
+                            <a href="editors.html"><i class="icon-chevron-right"></i> 意见反馈</a>
+                        </li>
+                        <li>
+                            <a href="interface.html"><i class="icon-chevron-right"></i> 广告管理</a>
+                        </li>
+                        <!--<li>
+                            <a href="#"><span class="badge badge-success pull-right">731</span> Orders</a>
+                        </li> -->
+                    </ul>
+                </div>
+                
+                <!--/span-->
+                <div class="span9" id="content">
+                     
+                   <div class="row-fluid">
+                        <!-- block -->
+                        <div class="block">
+                            <div class="navbar navbar-inner block-header">
+                                <div class="muted pull-left">股票池</div>
+                            </div>
+                            <div class="block-content collapse in" id="stockPool">
+                                <div class="span12">
+                                    
+  									<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+										<thead>
+											<tr>
+												<th width="20%">推荐日期</th>
+												<th width="20%">股票代码</th>
+												<th width="20%">股票名称</th>
+												<th width="20%">至今涨幅</th>
+												<th width="20%">操作</th>
+											</tr>
+										</thead>
+										<tbody id="gredysy">
+											<tr class="odd gradeX"  v-for="(el,index) in datas">
+                                             <!--   <td>{{index+1}}</td>-->
+
+                                                <td><input type="text" v-bind:value='formatMomentString(el.createDateTime)'  readonly="readonly" v-bind:stockMainId="el.stockMainId"></td>
+
+												<td><input type="text" v-bind:value="el.stockId"  readonly="readonly"></td>
+												<td><input type="text" v-bind:value="el.stockName"  readonly="readonly"></td>
+                                                <td><input type="text" v-bind:value="el.stockRose+'%'"  readonly="readonly"></td>
+                                                <td><a href="javascript:;" v-on:click="changeState($event)">编辑</a> <a href="javascript:;" v-on:click="saveState($event)">保存</a> </td>
+											</tr>
+
+										</tbody>
+									</table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /block -->
+                    </div>
+                     
+                  
+                     
+                </div>
+            </div>
+            <hr>
+            <footer>
+                <p>&copy; GSDJ 2016</p>
+            </footer>
+        </div>
+        <!--/.fluid-container-->
+        <script src="vendors/jquery-1.9.1.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/scripts.js"></script>
+        <script src="js/moment.js"></script>
+        <script src="assets/layer-v2.4/layer/layer.js"></script>
+        <script src="js/jquery.daterangepicker.js"></script>
+        <script>
+        $(function() {
+            //时间选择插件设置选项
+            var model = new Vue({
+                el: '#stockPool',
+                data: {
+                    Isdisabled: true,
+                    datas: {}
+                }, methods: {
+                    changeState: function (ev) {
+                        var _this = $(ev.target);
+                        _this.closest('tr').find('input').removeAttr('readonly');
+                    },
+                    saveState: function (ev) {
+                        var that=this;
+                        /*www.gushidianjin.com/webapp/stock/updateStackInfo*/
+                        var _this = $(ev.target);
+                        var _tr=_this.closest('tr').find('input');
+                        if((_tr.attr("readonly"))=="readonly"){
+                            layer.msg('编辑之后才可以保存', {time: 1000, icon: 1});
+                            return false;
+                        }
+                        var dataObj={};
+                        dataObj.createDateTime=_tr.eq('0').val();
+                        dataObj.stockMainId=_tr.eq('0').attr('stockMainId');
+                        dataObj.stockId=_tr.eq('1').val();
+                        dataObj.stockName=_tr.eq('2').val();
+                        dataObj.stockRose=_tr.eq('3').val().replace(/%/g,'');
+                        var PaginationObj=JSON.stringify(dataObj);
+                        $.ajax({
+                            url: 'http://www.gushidianjin.com/webapp/stock/updateStackInfo',
+                            type: 'post',
+                            async: false,
+                            data:{jsonData:PaginationObj},
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data);
+                                layer.msg('已保存', {time: 1000, icon: 1});
+                                that.getAllStock();
+                            }, error: function (data) {
+                                layer.msg('保存失败', {time: 1000, icon: 1});
+                            }
+                        });
+                        _this.closest('tr').find('input').attr("readonly", 'readonly');
+                    },
+                    formatMomentString: function (el) {
+                        return moment(el).format('YYYY-MM-DD HH:mm:ss');
+                    },
+                    getAllStock: function () {
+                        var that=this;
+                        var loading = layer.load(1, {shade: [0.8, '#393D49']}); //0代表加载的风格，支持0-2
+                        $.ajax({
+                            url: 'http://www.gushidianjin.com/webapp/stock/queryStockInfoList',
+                            type: 'post',
+                            async: false,
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data);
+                                that.datas = data.retContent;
+                                layer.close(loading);
+                            }, error: function (data) {
+                                layer.close(loading);
+                            }
+                        });
+                    }
+                }
+            });
+            model.getAllStock();
+
+        })
+        </script>
+    </body>
+<!--www.gushidianjin.com/webapp/stock/queryStockInfoList
+股票池查询接口
+张旭锋 2016/11/2 星期三 20:49:21
+没有参数
+锋
+www.gushidianjin.com/webapp/stock/updateStackInfo
+张旭锋 2016/11/2 星期三 20:50:30
+这个是更新完保存的接口
+张旭锋 2016/11/2 星期三 20:51:57
+参数:
+jsonData:{"stockName":"股票名称","stockRose":"涨幅数字，不带%"}
+
+
+www.gushidianjin.com/webapp/share/addSharesInfo，添加单支股票接口
+张旭锋 2016/11/2 星期三 20:55:38
+参数：
+jsonData：{"sharesCode":"股票代码","sharesName":"股票名称","sharesPy":"股票名称的拼音的首字母"}
+
+
+    www.gushidianjin.com/webapp/share/querySharesListByPage
+    张旭锋 2016/11/2 星期三 20:52:34
+    所有股票的查询接口
+    张旭锋 2016/11/2 星期三 20:54:23
+    参数：
+    jsonData：{"pageNo":"1","pageSize":"10","sharesCode":"股票代码","sharesName":"股票名称","sharesPy":"股票名称的拼音的首字母"}
+    -->
+
+</html>

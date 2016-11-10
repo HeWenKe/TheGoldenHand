@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>GSDJ管理后台 - 登录页</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+  </head>
+  <body id="login">
+  <div class="container">
+    <form class="form-signin">
+      <h2 class="form-signin-heading">GSDJ管理后台</h2>
+      <input type="text" class="input-block-level" placeholder="用户名" id="usernmae" name="username">
+      <input type="password" class="input-block-level" placeholder="密码" id="password" name="password">
+      <button class="btn btn-large btn-primary" type="button" id="send">登录</button>
+   </form>
+ </div> <!-- /container -->
+ <script src="vendors/jquery-1.9.1.min.js"></script>
+ <script src="bootstrap/js/bootstrap.min.js"></script>
+ <script type="text/javascript">
+    $(function() {
+        $('#send').click(function() {
+            var userName = $.trim($('#usernmae').val());
+            var passWord = $.trim($('#password').val());
+            if(passWord!=''&&userName!=''){
+                $.ajax({
+                    type: 'post',
+                    url: 'http://www.gushidianjin.com/webapp/admin/adminLogin?username=admin&password=admin',
+                    date:{username:userName,password:passWord},
+                    success: function (data) {
+                        var data=JSON.parse(data);
+                        console.log(data.retContent);
+                        var mainId= data.retContent.mainId;
+                        var token=data.retContent.token;
+                        if(data.retMessage=='ok'&&data.retCode==1){
+                            window.location.href ='index.html?mainId='+mainId+'&token='+token;
+                        }else{
+                            alert('登陆失败');
+                        }
+                    },
+                    error: function (eror) {
+                        console.log(eror);
+                        alert('登陆失败');
+                    }
+
+                })
+            }else{
+                alert('用户名或者密码不能为空！');
+            }
+
+        })
+    });
+ </script>
+  </body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>GSDJ管理后台</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="vendors/easypiechart/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/daterangepicker.css"/>
+    <link rel="stylesheet" href="css/mainbyhewenke.css"/>
+    <link rel="stylesheet" href="utf8-jsp/themes/default/css/ueditor.min.css"/><!--文本编辑器-->
+    <script src="utf8-jsp/ueditor.config.js"></script>
+    <script src="utf8-jsp/ueditor.all.min.js"></script>
+    <link rel="stylesheet" href="js/upload/jquery.fileupload-ui.css"/><!--图片上传样式-->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <style>
+        .control-group ul {
+            padding: 15px 0;
+        }
+
+        .control-group ul li {
+            line-height: 30px;
+        }
+
+        .control-group ul li a {
+            color: #ccc;
+        }
+        .date-picker-wrapper.single-date {
+            width: 227px;
+            z-index: 999;
+        }
+        .edui-editor-breadcrumb{
+            display: none;
+        }
+        .control-group-style-1{
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">GSDJ管理后台</a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> 超级管理员 <i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="login.html">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3" id="sidebar">
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li class="active">
+                    <a href="index.html"><i class="icon-chevron-right"></i> 添加文章</a>
+                </li>
+                <li>
+                    <a href="calendar.html"><i class="icon-chevron-right"></i> 所有文章</a>
+                </li>
+                <li>
+                    <a href="stats.html"><i class="icon-chevron-right"></i> 分类管理</a>
+                </li>
+                <li>
+                    <a href="form.html"><i class="icon-chevron-right"></i> 股票池</a>
+                </li>
+                <li>
+                    <a href="tables.html"><i class="icon-chevron-right"></i> 所有股票</a>
+                </li>
+                <li>
+                    <a href="buttons.html"><i class="icon-chevron-right"></i> 会员管理</a>
+                </li>
+                <li>
+                    <a href="editors.html"><i class="icon-chevron-right"></i> 意见反馈</a>
+                </li>
+                <li>
+                    <a href="interface.html"><i class="icon-chevron-right"></i> 广告管理</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--/span-->
+        <div class="span9" id="content">
+
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">添加文章</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <legend>开始添加</legend>
+                                    <div class="control-group">
+                                        <label class="control-label" for="typeahead">标题 </label>
+                                        <div class="controls">
+                                            <input type="text" class="span6" id="typeahead"  data-provide="typeahead" data-items="4" >
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="select01">所属栏目</label>
+                                        <div class="controls controls_style_1" id="indexSelct">
+                                            <select id="select01">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1">
+                                        <label class="control-label" for="typeahead">建议仓位 </label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6" id="cangwei"  data-provide="typeahead" data-items="4" >
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group control-group-style-1">
+                                        <label class="control-label" for="typeahead">短期</label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6" id="duanqi"  data-provide="typeahead" data-items="4" >
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group control-group-style-1">
+                                        <label class="control-label" for="typeahead">中期</label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6" id="zhongqi"  data-provide="typeahead" data-items="4" >
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group control-group-style-1">
+                                        <label class="control-label" for="typeahead">题材热点</label>
+                                        <div class="controls">
+                                            <textarea wrap="physical"   class="span6 typeaheadspan6" id="redian"  data-provide="typeahead" data-items="4" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1">
+                                        <label class="control-label" for="typeahead">操作策略</label>
+                                        <div class="controls">
+                                            <textarea type="text" class="span6 typeaheadspan6" id="celue"  data-provide="typeahead" data-items="4" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1">
+                                        <label class="control-label" for="typeahead">风险提示</label>
+                                        <div class="controls">
+                                            <textarea type="text" wrap="virtual"  class="span6 typeaheadspan6" id="fengxian"  data-provide="typeahead" data-items="4" ></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="typeahead">作者 </label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6" id="zuozhe"  data-provide="typeahead" data-items="4" >
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group" ms-controller="dateChoose">
+                                        <label class="control-label" for="optionsCheckbox">发布时间</label>
+                                        <div class="controls">
+                                            <input placeholder="请选择约定时间" id="date-range1" type="text" style="margin-left:20px;width:204px;height:20px;"/></div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="fileInput">文章封面图</label>
+                                        <div  class="controls upload-bg"><!---->
+                                            <input class="upload" id="file" type="file" name="file">
+                                            <img id="showImg" style="display:none;width:100%;height:100%" src="" alt="" />
+                                            <p class="reupload">
+                                                重新上传
+                                                <input class="imgEditor" id="uploadNext" type="file" name="file" value=""/>
+                                            </p>
+                                            <input type="hidden" value="" id="url">
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="textarea2">文章详情</label>
+                                        <div class="controls">
+                                            <!-- 加载编辑器的容器 -->
+                                            <script id="container" name="content" type="text/plain"></script>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="typeahead">相关股票 </label>
+                                        <div class="controls">
+                                            <!--<input type="text" class="span6" id="typeahead"  data-provide="typeahead" data-items="4" ><button class="btn btn-success" style="width:100px; margin-left:20px">添加</button><br>-->
+                                            <div class="filed">
+                                                <input id="addGupiao" class="addGupiao" name="addGupiao" type="text" placeholder="">
+                                            </div>
+
+
+                                            <input class="addGupiaoButton" name="" type="button" value="添加">
+
+                                            <ul id="gupiaolist">
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="optionsCheckbox">文章属性</label>
+                                        <div class="controls">
+                                            <label style="float:left"><input type="radio" name="RadioGroup1" value="1" id="vip">  设为VIP</label>
+                                            <label style="float:left;margin-left: 20px; "><input type="radio" name="RadioGroup1" value="0" id="no_vip">  公开</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="button" class="btn btn-primary btn-large" id="fabu">发布</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        </div>
+    </div>
+    <hr>
+    <footer>
+        <p>&copy; GSDJ 2016</p>
+    </footer>
+</div>
+<!--/.fluid-container-->
+<link href="vendors/uniform.default.css" rel="stylesheet" media="screen">
+<link href="vendors/chosen.min.css" rel="stylesheet" media="screen">
+
+<link href="vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet" media="screen">
+
+<script src="vendors/jquery-1.9.1.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="vendors/jquery.uniform.min.js"></script>
+<script src="vendors/chosen.jquery.min.js"></script>
+
+<script src="vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
+<script src="vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
+
+<script src="vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
+
+<script type="text/javascript" src="vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="assets/form-validation.js"></script>
+<script src="assets/scripts.js"></script>
+<script src="js/jquery.autocompleter.js"></script>
+<!--贺文科 start-->
+<!--时间插件-->
+<script src="js/moment.js"></script>
+<script src="js/jquery.daterangepicker.js"></script>
+<!--textarea自动伸缩-->
+<script src="js/autosize.js"></script>
+<!--图片上传 这五个文件按顺序放置-->
+<script src="js/upload/jquery.ui.widget.js"></script>
+<script src="js/upload/jquery.iframe-transport.js"></script>
+<script src="js/upload/jquery.fileupload.js"></script>
+<script src="js/upload/jquery.fileupload-process.js"></script>
+<script src="js/upload/jquery.fileupload-ui.js"></script>
+
+<script src="js/mainbyhewenke.js"></script>
+<script>
+    function getoptionKinds(){
+        $.ajax({
+            url:'http://www.gushidianjin.com/webapp/articleType/queryAllArticleList',
+            type:'post',
+            dataType:'json',
+            success:function (data) {
+                if(data.retCode==1){
+                    var  optionKinds=data.retContent;
+                    var str='';
+                    for(var i=0,l=optionKinds.length;i<l;i++){
+                        str+='<option value="'+optionKinds[i].articleTypeId+'">'+optionKinds[i].articleTypeName+'</option>';
+                    }
+                    $('#select01').append(str);
+
+                }
+            },
+            error:function(data){
+                console.log(data);
+            }
+        });
+
+    }
+    getoptionKinds();
+
+    autosize(document.querySelectorAll('textarea'));
+    //时间选择插件设置选项
+    $('#date-range1').dateRangePicker(
+            {
+                startOfWeek: 'monday',
+                separator : ' ~ ',
+                format: 'YYYY-MM-DD HH:mm:ss',
+                time: {
+                    enabled: true
+                },
+                autoClose: false,
+                singleDate : true,
+                showShortcuts: false
+            });
+
+
+
+
+
+
+
+</script>
+<!--贺文科 end-->
+
+<script>
+
+    jQuery(document).ready(function() {
+        FormValidation.init();
+    });
+
+    $(function() {
+        setTimeout(function () {
+            $('.autocompleter').addClass('autocompleter-closed');
+        });
+        $.ajax({
+            url : "http://www.gushidianjin.com/webapp/share/queryShares",
+            type : 'get',
+            dataType : 'json'
+        }).done(function (data) {
+            $('#addGupiao').autocompleter({
+                highlightMatches: true,
+                source:data.retContent,
+                template: '{{ sharesCode }} - {{ sharesName }}',
+                hint: true,
+                empty: false,
+                limit: 5,
+                callback: function (value, index, selected) {
+                    if (selected) {
+                        $('#addGupiao').val(selected.sharesCode+' '+selected.sharesName)
+                    }
+                }
+            });
+        });
+
+
+    });
+
+
+    $(function() {
+        $(".uniform_on").uniform();
+        $(".chzn-select").chosen();
+        $('.textarea').wysihtml5();
+
+        $('#rootwizard').bootstrapWizard({onTabShow: function(tab, navigation, index) {
+            var $total = navigation.find('li').length;
+            var $current = index+1;
+            var $percent = ($current/$total) * 100;
+            $('#rootwizard').find('.bar').css({width:$percent+'%'});
+            // If it's the last tab then hide the last button and show the finish instead
+            if($current >= $total) {
+                $('#rootwizard').find('.pager .next').hide();
+                $('#rootwizard').find('.pager .finish').show();
+                $('#rootwizard').find('.pager .finish').removeClass('disabled');
+            } else {
+                $('#rootwizard').find('.pager .next').show();
+                $('#rootwizard').find('.pager .finish').hide();
+            }
+        }});
+        $('#rootwizard .finish').click(function() {
+            alert('Finished!, Starting over!');
+            $('#rootwizard').find("a[href*='tab1']").trigger('click');
+        });
+    });
+
+
+    $(function(){
+        $('.addGupiaoButton').click(function(){
+            var oVal=$('.addGupiao').val();
+            $(this).parents('.controls').find('ul').append('<li>'+oVal+'  <a href="javascript:void(0);" class="delete">（删除）</a></li>');
+        });
+
+        $(".controls").delegate(".delete", "click", function(event){
+            $(this).parents('li').remove();
+        });
+        $('#select01').change(function(){
+            var oVal=$(this).find("option:selected").text();
+            if(oVal=='每日内参'){
+                $('.control-group-style-1').show();
+            }else{
+                $('.control-group-style-1').hide();
+            }
+        });
+
+    });
+
+    //图片上传函数
+    $('#file').on('change',imgUpLoad('file'));
+    //重新上传
+    $('#uploadNext').on('change',imgUpLoad('uploadNext'));
+    var ue = UE.getEditor('container');
+
+
+    //提交
+    $(function() {
+        $('#fabu').on('click', function() {
+            var json = {};
+            json.article = {};
+            json.articleSharesRelations = [];
+            var ul = document.getElementById('gupiaolist');
+            var lis=ul.childNodes;
+            for(var i=1;i<lis.length;i++){
+                var values = lis.item(i).innerHTML.trim().split(" ");
+                var json1={};
+                json1.sharesId = values[0];
+                json1.sharesName = values[1];
+                json.articleSharesRelations.push(json1);
+            }
+
+            //获取被选中的所属栏目
+            var str = jQuery("#select01  option:selected").text();
+            if(str == "每日内参"){
+                console.log("true");
+                //alert(str);
+                json.dayReference = {};
+                json.dayReference.storeNum=$('#cangwei').val();
+                json.dayReference.shortDate=$('#duanqi').val();
+                json.dayReference.longDate=$('#zhongqi').val();
+                json.dayReference.hotPoint=$('#redian').val();
+                json.dayReference.operStrategy=$('#celue').val();
+                json.dayReference.dangerCue=$('#fengxian').val();
+            }
+
+            json.article.articleTitle = $('#typeahead').val();
+            json.article.articleAuthor = $('#zuozhe').val();
+            json.article.release =  $('#date-range1').val();
+            json.article.articleCoverUrl = $('#url').val();
+            json.article.kind=1;
+            //获取富文本编辑器的文章内容
+            var contentHtml=ue.getContentTxt();
+
+            json.article.articleContent = contentHtml;//文章详情
+            json.article.isVipArticle = $('input[name="RadioGroup1"]:checked').val();
+            json.article.articleTypeId=jQuery("#select01  option:selected").val();
+
+            console.log(JSON.stringify(json));
+            var urlObj=queryUrlPromete();
+
+            var token = urlObj.token;
+            var strPath ="http://www.gushidianjin.com/webapp/article/addArticle";//http://www.gushidianjin.com
+            $.ajax( {
+                url:strPath,// 跳转到 action    
+                data:{"token":token,"jsondata":JSON.stringify(json)},
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                    alert("添加成功！");
+                    alert(data.retContent);
+                    var token = data.retContent;
+                    window.location.href="calendar.html?token=" + token;
+                },
+                error : function() {
+                    // view("异常！");    
+                    alert("异常！");
+                }
+            });
+        })
+    });
+
+
+</script>
+</body>
+
+</html>

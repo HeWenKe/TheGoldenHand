@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="no-js">
+    
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>GSDJ管理后台</title>
+        <!-- Bootstrap -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="assets/styles.css" rel="stylesheet" media="screen">
+        <link href="assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <script src="vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">GSDJ管理后台</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                            <li class="dropdown">
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> 超级管理员 <i class="caret"></i>
+
+                                </a>
+                                <ul class="dropdown-menu">
+                                   
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a tabindex="-1" href="login.html">退出</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3" id="sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                        <li>
+                            <a href="index.html"><i class="icon-chevron-right"></i> 添加文章</a>
+                        </li>
+                        <li>
+                            <a href="calendar.html"><i class="icon-chevron-right"></i> 所有文章</a>
+                        </li>
+                        <li>
+                            <a href="stats.html"><i class="icon-chevron-right"></i> 分类管理</a>
+                        </li>
+                        <li>
+                            <a href="form.html"><i class="icon-chevron-right"></i> 股票池</a>
+                        </li>
+                        <li>
+                            <a href="tables.html"><i class="icon-chevron-right"></i> 所有股票</a>
+                        </li>
+                        <li class="active">
+                            <a href="buttons.html"><i class="icon-chevron-right"></i> 会员管理</a>
+                        </li>
+                        <li>
+                            <a href="editors.html"><i class="icon-chevron-right"></i> 意见反馈</a>
+                        </li>
+                        <li>
+                            <a href="interface.html"><i class="icon-chevron-right"></i> 广告管理</a>
+                        </li>
+                        <!--<li>
+                            <a href="#"><span class="badge badge-success pull-right">731</span> Orders</a>
+                        </li> -->
+                    </ul>
+                </div>
+                
+                <!--/span-->
+                <div class="span9" id="content">
+                     
+                   <div class="row-fluid">
+                        <!-- block -->
+                        <div class="block">
+                            <div class="navbar navbar-inner block-header">
+                                <div class="muted pull-left">会员管理</div>
+                            </div>
+                            <div class="sdfsdfsdf clearfix" style="padding:20px;">
+                                <select class="span6 m-wrap" name="category" style="width:200px; float:left; margin-right:10px;">
+                                    <option value="">用户属性</option>
+                                    <option value="Category 1">VIP</option>
+                                    <option value="Category 2">普通用户</option>
+                                </select>
+                                <button style="float:right" type="submit" class="btn btn-primary">筛选</button>
+                            </div>                                    
+                            <div class="block-content collapse in">
+                                <div class="span12">
+                                    
+  									<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+										<thead>
+											<tr>
+												<th>会员ID（手机号）</th>
+												<th>会员昵称</th>
+												<th>注册日期</th>
+												<th>是否为vip</th>
+                                                <th>vip时长</th>
+												<th>到期倒计时（天）</th>
+												<th>使用设备</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            <tr class="odd gradeX">
+												<td>13256521021</td>
+												<td>王晓丽</td>
+												<td>2016-03-20 15:29</td>
+                                                <td>否</td>
+                                                <td>2016/03/20 — 2016/04/20</td>
+                                                <td>20</td>
+                                                <td>iphone6s</td>
+											</tr>
+                                            
+                                            
+										</tbody>
+									</table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /block -->
+                    </div>
+                     
+                  
+                     
+                </div>
+            </div>
+            <hr>
+            <footer>
+                <p>&copy; GSDJ 2016</p>
+            </footer>
+        </div>
+        <!--/.fluid-container-->
+
+        <script src="vendors/jquery-1.9.1.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="vendors/datatables/js/jquery.dataTables.min.js"></script>
+
+
+        <script src="assets/scripts.js"></script>
+        <script src="assets/DT_bootstrap.js"></script>
+        <script>
+        $(function() {
+            
+        });
+        </script>
+    </body>
+
+</html>

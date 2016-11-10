@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>编辑</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/daterangepicker.css"/>
+    <link rel="stylesheet" href="css/mainbyhewenke.css"/>
+    <link rel="stylesheet" href="utf8-jsp/themes/default/css/ueditor.min.css"/><!--文本编辑器-->
+    <script src="utf8-jsp/ueditor.config.js"></script>
+    <script src="utf8-jsp/ueditor.all.min.js"></script>
+    <link rel="stylesheet" href="js/upload/jquery.fileupload-ui.css"/><!--图片上传样式-->
+    <script src="assets/vue2.0.js"></script>
+    <style>
+        .control-group ul {
+            padding: 0;
+            clear: both;
+        }
+
+        .control-group ul li {
+            line-height: 30px;
+        }
+
+        .control-group ul li a {
+            color: #ccc;
+        }
+
+        .date-picker-wrapper.single-date {
+            width: 227px;
+            z-index: 999;
+        }
+
+        .isHide, .edui-editor-breadcrumb {
+            display: none;
+        }
+
+        .autocompleter-list {
+            border: 0;
+        }
+
+        .onchoose {
+            border: 1px solid #ccc;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row-fluid" id="articleDetail">
+        <!--/span-->
+        <div class="span9" id="content" style="margin:0 auto;float:none;">
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">编辑文章</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="control-group">
+                                        <label class="control-label" for="typeahead">标题 </label>
+                                        <div class="controls">
+                                            <input type="text" class="span6" id="typeahead"
+                                                   v-model="datas.article.articleTitle">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="select01">所属栏目</label>
+                                        <div class="controls controls_style_1">
+                                            <select id="select01" v-model="datas.articleType.articleTypeName">
+                                                <option v-for="el in selectObj" v-bind:value="el.articleTypeName"  v-bind:idNum="el.articleTypeId">
+                                                    {{el.articleTypeName}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">建议仓位 </label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6"
+                                                   v-model="datas.dayReference.storeNum" id="cangwei"
+                                                   data-provide="typeahead" data-items="4">
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(!datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">建议仓位 </label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6" id="cangwei"
+                                                   data-provide="typeahead" data-items="4">
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">短期</label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6"
+                                                   v-model="datas.dayReference.shortDate" id="duanqi"
+                                                   data-provide="typeahead" data-items="4">
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(!datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">短期</label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6" id="duanqi"
+                                                   data-provide="typeahead" data-items="4">
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">中期</label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6"
+                                                   v-model="datas.dayReference.longDate" id="zhongqi"
+                                                   data-provide="typeahead" data-items="4">
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(!datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">中期</label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6" id="zhongqi"
+                                                   data-provide="typeahead" data-items="4">
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">题材热点</label>
+                                        <div class="controls">
+                                            <textarea wrap="physical" class="span6 typeaheadspan6"
+                                                      v-model="datas.dayReference.hotPoint" id="redian"
+                                                      data-provide="typeahead"
+                                                      data-items="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(!datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">题材热点</label>
+                                        <div class="controls">
+                                            <textarea wrap="physical" class="span6 typeaheadspan6" id="redian"
+                                                      data-provide="typeahead"
+                                                      data-items="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">操作策略</label>
+                                        <div class="controls">
+                                            <textarea type="text" class="span6 typeaheadspan6"
+                                                      v-model="datas.dayReference.operStrategy" id="celue"
+                                                      data-provide="typeahead"
+                                                      data-items="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(!datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">操作策略</label>
+                                        <div class="controls">
+                                            <textarea type="text" class="span6 typeaheadspan6" id="celue"
+                                                      data-provide="typeahead"
+                                                      data-items="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">风险提示</label>
+                                        <div class="controls">
+                                            <textarea type="text" wrap="virtual" v-model="datas.dayReference.dangerCue"
+                                                      class="span6 typeaheadspan6" id="fengxian"
+                                                      data-provide="typeahead"
+                                                      data-items="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group control-group-style-1"
+                                         v-if="(!datas.dayReference)&&(datas.articleType.articleTypeName=='每日内参')">
+                                        <label class="control-label" for="typeahead">风险提示</label>
+                                        <div class="controls">
+                                            <textarea type="text" wrap="virtual" class="span6 typeaheadspan6"
+                                                      id="fengxian" data-provide="typeahead"
+                                                      data-items="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="typeahead">作者 </label>
+                                        <div class="controls">
+                                            <input type="text" class="span6 typeaheadspan6"
+                                                   v-model="datas.article.articleAuthor" id="zuozhe"
+                                                   data-provide="typeahead" data-items="4">
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="optionsCheckbox">发布时间</label>
+                                        <div class="controls">
+                                            <input placeholder="请选择约定时间" id="date-range1" type="text"
+                                                   v-model="datas.article.creatDate"
+                                                   style="margin-left:20px;width:204px;height:20px;"/></div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="fileInput">文章封面图</label>
+                                        <div class="controls upload-bg"><!---->
+                                            <input class="upload" id="file" type="file" name="file"
+                                                   style="display: none">
+                                            <img id="showImg" style="display:block;width:100%;height:100%"
+                                                 src="images/2.jpg" alt=""/><!--datas.article.articleCoverUrl-->
+                                            <p class="reupload">
+                                                重新上传
+                                                <input class="imgEditor" id="uploadNext" type="file" name="file"
+                                                       value=""/>
+                                            </p>
+                                            <input type="hidden" value="" id="url">
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="textarea2">文章详情</label>
+                                        <div class='controls'>
+                                            <!-- 加载编辑器的容器 -->
+                                            <script id="container" name="content" type="text/plain">{{datas.article.articleContent}}
+
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="typeahead">相关股票 </label>
+                                        <div class="controls">
+                                            <div class="filed">
+                                                <input id="addGupiao" class="addGupiao" name="addGupiao" type="text"
+                                                       placeholder="">
+                                            </div>
+                                            <input class="addGupiaoButton" name="" type="button" value="添加">
+
+                                            <ul id="gupiaolist">
+                                                <li v-for="ele in datas.articleSharesRelations">
+                                                    {{ele.sharesId}} {{ele.sharesName}} <a href="javascript:void(0);"
+                                                                          class="delete">（删除）</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="optionsCheckbox">文章属性</label>
+                                        <div class="controls">
+                                            <label style="float:left" v-if="datas.article.isVipArticle==1"><input
+                                                    type="radio" name="RadioGroup1" value="1" id="vip" checked>
+                                                设为VIP</label>
+                                            <label style="float:left" v-if="datas.article.isVipArticle==0"><input
+                                                    type="radio" name="RadioGroup1" value="1" id="vip"> 设为VIP</label>
+                                            <label style="float:left;margin-left: 20px;"
+                                                   v-if="datas.article.isVipArticle==0"><input type="radio" checked
+                                                                                               name="RadioGroup1"
+                                                                                               value="0" id="no_vip"> 公开</label>
+
+
+                                            <label style="float:left;margin-left: 20px; "
+                                                   v-if="datas.article.isVipArticle==1"><input type="radio"
+                                                                                               name="RadioGroup1"
+                                                                                               value="0" id="no_vip"> 公开</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <input type="hidden" id="kindValue" v-model="datas.article.kind">
+                                        <button type="button" class="btn btn-primary btn-large" id="fabu">发布</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.fluid-container-->
+<link href="vendors/uniform.default.css" rel="stylesheet" media="screen">
+<link href="vendors/chosen.min.css" rel="stylesheet" media="screen">
+
+
+<script src="vendors/jquery-1.9.1.js"></script>
+<script src="vendors/chosen.jquery.min.js"></script>
+<script src="vendors/jquery.uniform.min.js"></script>
+
+<script src="assets/layer-v2.4/layer/layer.js"></script>
+<link rel="stylesheet" href="assets/layer-v2.4/layer/skin/layer.css">
+<script src="vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
+<script src="vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
+
+<script src="vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
+
+<script type="text/javascript" src="vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="assets/form-validation.js"></script>
+<script src="assets/scripts.js"></script>
+<script src="js/jquery.autocompleter.js"></script>
+<!--贺文科 start-->
+<!--时间插件-->
+<script src="js/moment.js"></script>
+<script src="js/jquery.daterangepicker.js"></script>
+<!--textarea自动伸缩-->
+<script src="js/autosize.js"></script>
+<!--图片上传 这五个文件按顺序放置-->
+<script src="js/upload/jquery.ui.widget.js"></script>
+<script src="js/upload/jquery.iframe-transport.js"></script>
+<script src="js/upload/jquery.fileupload.js"></script>
+<script src="js/upload/jquery.fileupload-process.js"></script>
+<script src="js/upload/jquery.fileupload-ui.js"></script>
+
+<script>
+    //url参数截取
+    function queryUrlPromete(url) {
+        var url = url || window.location.href;
+        var obj = {};
+        var reg = /([^?&=]+)=([^?&=]+)/g;
+        url.replace(reg, function () {
+            var arg = arguments;
+            obj[arg[1]] = arg[2];
+        })
+        return obj;
+
+    }
+    //截取iframe穿过来的url和articleId
+    var objUrl = queryUrlPromete();
+    console.log(objUrl);
+    var datasObj = {};
+    //获取详情
+    var reSetObj={};
+    $.ajax({
+        url: objUrl.url,
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: {"articleId": objUrl.articleId},
+        success: function (data) {
+            datasObj = data.retContent;
+            reSetObj=datasObj.article;//初始化这个对象,为了合并
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+    var optionKinds = {};
+    getoptionKinds();
+    function getoptionKinds() {
+        $.ajax({
+            url: 'http://www.gushidianjin.com/webapp/articleType/queryAllArticleList',
+            type: 'post',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.retCode == 1) {
+                    optionKinds = data.retContent;
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+
+    }
+    var articleModel = new Vue({
+        el: "#articleDetail",
+        data: {
+            datas: datasObj,
+            selectObj: optionKinds
+        },
+        methods: {
+            getDatas: function () {
+                var that = this;
+                $.ajax({
+                    url: objUrl.url,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {"articleId": objUrl.articleId},
+                    success: function (data) {
+                        console.log(data);
+                        that.datas = data.retContent;
+                        console.log(that.datas);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+        }
+    });
+    console.log(articleModel);
+
+    $(".chzn-select").chosen();
+    autosize(document.querySelectorAll('textarea'));
+    //时间选择插件设置选项
+    $('#date-range1').dateRangePicker(
+            {
+                startOfWeek: 'monday',
+                separator: ' ~ ',
+                format: 'YYYY-MM-DD HH:mm',
+                time: {
+                    enabled: true
+                },
+                autoClose: false,
+                singleDate: true,
+                showShortcuts: false
+            });
+    //图片上传 eleId   type=file的id
+    function imgUpLoad(eleId) {
+        $('#' + eleId).fileupload({
+            autoUpload: true,//自动上传
+            url: "http://www.gushidianjin.com/webapp/fileUpload/imgFileUpload",//�ϴ���ַ
+            dataType: 'json',
+            done: function (e, data) {
+                var oimage = data,
+                        _this = $('#' + eleId);
+                if (eleId == 'file') {
+                    _this.hide();
+                    _this.siblings('img').attr('src', oimage.result.url).show();
+                } else {//重新上传
+                    _this.parent().siblings('img').attr('src', oimage.result.url);
+                }
+
+            }
+            //上传之前可以执行的
+            /* $('#fileuploada').on('fileuploadstart', function (e, data) {
+             if( $('.imageload').attr('src')=='') {
+             $('.imageload').attr('src', "/images/loading.gif")} ;
+             });*/
+        });
+    }
+    ;
+
+    $('.upload-bg').hover(function () {
+        $(this).find('p').show();
+    }, function () {
+        $(this).find('p').hide();
+    });
+    $('#url').val($(this).find('img').attr('src'));
+
+    $.ajax({
+        url: "http://www.gushidianjin.com/webapp/share/queryShares",
+        type: 'get',
+        dataType: 'json'
+    }).done(function (data) {
+        $('#addGupiao').autocompleter({
+            highlightMatches: true,
+            source: data.retContent,
+            template: '{{ sharesCode }} - {{ sharesName }}',
+            hint: true,
+            empty: false,
+            limit: 5,
+            callback: function (value, index, selected) {
+                if (selected) {
+                    $('#addGupiao').val(selected.sharesCode + ' ' + selected.sharesName)
+                }
+
+            }
+        });
+    });
+    $('#addGupiao').focus(function () {
+        $('.autocompleter-list').addClass('onchoose');
+    });
+    $('#addGupiao').blur(function () {
+        $('.autocompleter-list').removeClass('onchoose');
+    })
+
+    $('.addGupiaoButton').click(function () {
+        var oVal = $('.addGupiao').val();
+        $(this).parents('.controls').find('ul').append('<li>' + oVal + '  <a href="javascript:void(0);" class="delete">（删除）</a></li>');
+    });
+
+    $(".controls").delegate(".delete", "click", function (event) {
+        $(this).parents('li').remove();
+    });
+    $('#select01').change(function () {
+        var oVal = $(this).val();
+        if (oVal == '每日内参') {
+            $('.control-group-style-1').show();
+        } else {
+            $('.control-group-style-1').hide();
+        }
+    });
+
+    //重新上传
+    $('#uploadNext').on('change', imgUpLoad('uploadNext'));
+    var ue = UE.getEditor('container');
+
+    //提交
+    $(function () {
+        $('#fabu').on('click', function () {
+            var json = {};
+            json.article = {};
+            json.articleSharesRelations = [];
+            var ul = $('#gupiaolist');
+            var lis=ul.find('li');
+            for (var k = 1; k < lis.length; k++) {
+                var values =$.trim(lis.eq(k).html()).split(" ");
+                var json1 = {};
+                json1.sharesId = values[0];
+                json1.sharesName = values[1];
+                alert(1);
+                json.articleSharesRelations.push(json1);
+            }
+
+            //获取被选中的所属栏目
+            var str = jQuery("#select01  option:selected").text();
+            if (str == "每日内参") {
+                //alert(str);
+                json.dayReference = {};
+                json.dayReference.storeNum = $('#cangwei').val();
+                json.dayReference.shortDate = $('#duanqi').val();
+                json.dayReference.longDate = $('#zhongqi').val();
+                json.dayReference.hotPoint = $('#redian').val();
+                json.dayReference.operStrategy = $('#celue').val();
+                json.dayReference.dangerCue = $('#fengxian').val();
+            }
+
+            json.article.articleTitle = $('#typeahead').val();
+            json.article.articleAuthor = $('#zuozhe').val();
+            json.article.release = $('#date-range1').val();
+            json.article.articleCoverUrl = $('#url').val();
+            json.article.kind = $('#kindValue').val();
+            //获取富文本编辑器的文章内容
+            var contentHtml = ue.getContentTxt();
+            json.article.articleContent = contentHtml;//文章详情
+            json.article.isVipArticle = $('input[name="RadioGroup1"]:checked').val();
+            json.article.articleTypeId = $("#select01  option:selected").attr('idNum');
+            var strPath = "www.gushidianjin.com/webapp/article/updateArticleInfo";
+            $.ajax({
+                url: strPath,// 跳转到 action
+                data: {"token": objUrl.token, "jsondata": JSON.stringify(json)},
+                type: 'post',
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    layer.msg('编辑成功', {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        var obj = window.parent.PaginationObj;
+                        window.parent.getTableData(obj);
+                        console.log(obj);
+                        parent.layer.close(index);
+                    });
+                },
+                error: function () {
+                    // view("异常！");
+                    alert("异常！");
+                }
+            });
+        })
+    });
+
+
+</script>
+</body>
+
+</html>
