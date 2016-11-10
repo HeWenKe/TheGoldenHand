@@ -213,29 +213,31 @@ var model = new Vue({
         },
         addStock:function(el){
            if(el=='1'){//添加股票
-               if(this.sharesCode||this.sharesName||this.sharesPy){
-                   layer.msg('参数不能为空！', {time: 1000, icon: 2}); return false;
-               }
-               var jsonData={sharesCode:this.sharesCode,sharesName:this.sharesName,sharesPy:this.sharesPy};
-               jsonData=JSON.stringify(jsonData);
-               $.ajax({
-                   url:'http://www.gushidianjin.com/webapp/share/addSharesInfo',
-                   type:'post',
-                   data:{jsonData:jsonData},
-                   dataType:'json',
-                   success:function (data) {
-                       console.log(data);
-                       if(data.retCode==1){
-                           layer.msg('添加完成', {time: 1000, icon: 1});
-                           getTableData(PaginationObj);
-                       }else{
+               if (this.sharesCode && this.sharesName && this.sharesPy) {
+                   var jsonData = {sharesCode: this.sharesCode, sharesName: this.sharesName, sharesPy: this.sharesPy};
+                   jsonData = JSON.stringify(jsonData);
+                   $.ajax({
+                       url: 'http://www.gushidianjin.com/webapp/share/addSharesInfo',
+                       type: 'post',
+                       data: {jsonData: jsonData},
+                       dataType: 'json',
+                       success: function (data) {
+                           console.log(data);
+                           if (data.retCode == 1) {
+                               layer.msg('添加完成', {time: 1000, icon: 1});
+                               getTableData(PaginationObj);
+                           } else {
+                               layer.msg('添加失败', {time: 1000, icon: 1});
+                           }
+                       },
+                       error: function (data) {
                            layer.msg('添加失败', {time: 1000, icon: 1});
                        }
-                   },
-                   error:function(data){
-                       layer.msg('添加失败', {time: 1000, icon: 1});
-                   }
-               });
+                   });
+
+               } else {
+                   layer.msg('参数不能为空！', {time: 1000, icon: 2}); return false;
+               }
            }else if(el=="2"){//查询股票
                var PaginationObj={
                        pageNo: "1", //页数
