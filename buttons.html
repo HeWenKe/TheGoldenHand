@@ -108,7 +108,6 @@
                                                 <th>vip时长</th>
 												<th>到期倒计时（天）</th>
                                                 <th>操作</th>
-                                                <th>操作</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -128,8 +127,9 @@
                                             <td>sdddsdsd</td>
                                             <!--  <td>{{el.liveTime}}</td>
                                               <td>{{ele.onLineTime}}</td>-->
-                                            <td><a href="javascript:;" v-on:click="setVip(el.telPhone)">设为VIP</a><a href="javascript:;">取消VIP</a><a
-                                                    href="javascript:;">删除</a></td>
+                                            <td><a v-if="el.isVip==1" href="javascript:;" v-on:click="setVip(el.telPhone)">设为VIP</a><a
+                                                    href="javascript:;" v-if="el.isVip==2" v-on:click="cancelVip(el.telPhone)">取消VIP</a><a
+                                                    href="javascript:;" v-on:click="isDelete(el.telPhone)">删除</a></td>
 											</tr>
 										</tbody>
 									</table>

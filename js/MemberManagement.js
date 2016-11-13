@@ -27,17 +27,17 @@ var PaginationResult = {};
 function getTableData(options) {
     var loading = layer.load(1, {shade: [0.8, '#393D49']}); //0代表加载的风格，支持0-2
     var dataObj = null;
-    // PaginationObj= $.extend({
-    //     pageNo: "1", //页数
-    //     pageSize: "10" //每页显示条数
-    //     //userType: ""用户类型 1-普通用户，2-vip用户
-    // },options);
-    // var jsonDatas =JSON.stringify(PaginationObj);
+    PaginationObj = $.extend({
+        pageNo: "1", //页数
+        pageSize: "10", //每页显示条数
+        userType: ""//用户类型 1-普通用户，2-vip用户
+    }, options);
+    var jsonDatas = JSON.stringify(PaginationObj);
     $.ajax({
-        url: 'http://www.gushidianjin.com/webapp/user/queryUserInfoList?pageNo=1&pageSize=10',
+        url: 'http://www.gushidianjin.com/webapp/user/queryUserInfoList',
         type: 'post',
         async: false,
-        // data: jsonDatas,
+        data: jsonDatas,
         dataType: 'json',
         success: function (data) {
             PaginationResult = {};
@@ -140,9 +140,37 @@ var model = new Vue({
         setVipDate: {}
     },
     methods: {
-        //删除
-        isDelete: function (id) {
-            layer.confirm('你确认要删除这篇文章吗？', {
+        //删除 www.gushidianjin.com/webapp/user/deleteUser?userTel=15510677963
+        isDelete: function (userTel) {
+            layer.confirm('你确认要删除此用户吗？', {
+                btn: ['确认', '取消'] //按钮
+            }, function () {
+                $.ajax({
+                    url: 'http://www.gushidianjin.com/webapp/user/deleteUser?userTel=' + userTel,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.retCode == 1) {
+                            layer.msg('已删除', {time: 1000, icon: 1});
+                        } else {
+                            layer.msg('删除失败', {time: 1000, icon: 1});
+                        }
+                    },
+                    error: function (data) {
+                        layer.msg('删除失败', {time: 1000, icon: 1});
+                    }
+                });
+
+            }, function () {
+                /*layer.msg('也可以这样', {
+                 time: 20000, //20s后自动关闭
+                 btn: ['明白了', '知道了']
+                 });*/
+            });
+
+        },
+        cancelVip: function (userTel) {
+            layer.confirm('你确认要取消此用户的VIP吗？', {
                 btn: ['确认', '取消'] //按钮
             }, function () {
                 /*http://www.gushidianjin.com/webapp/article/deleteArticle
@@ -150,20 +178,18 @@ var model = new Vue({
                  articleId //文章id
                  */
                 $.ajax({
-                    url: 'http://www.gushidianjin.com/webapp/article/deleteArticle',
+                    url: 'http://www.gushidianjin.com/webapp/user/deleteUserVip?userTel=' + userTel,
                     type: 'post',
-                    data: {"articleId": id},
                     dataType: 'json',
                     success: function (data) {
                         if (data.retCode == 1) {
-                            layer.msg('已删除', {time: 1000, icon: 1});
-                            getTableData(PaginationObj);
+                            layer.msg('已取消', {time: 1000, icon: 1});
                         } else {
-                            layer.msg('删除失败', {time: 1000, icon: 1});
+                            layer.msg('取消失败', {time: 1000, icon: 1});
                         }
                     },
                     error: function (data) {
-                        layer.msg('删除失败', {time: 1000, icon: 1});
+                        layer.msg('取消失败', {time: 1000, icon: 1});
                     }
                 });
 
@@ -219,9 +245,11 @@ var model = new Vue({
                             dataType: 'json',
                             success: function (data) {
                                 if (data.retCode == 1) {
-                                    layer.msg('设置成功', {time: 1000, icon: 1});
-                                    layer.closeAll();
-                                    $(layero).find("input[type='radio']").prop('checked', false);
+                                    layer.msg('设置成功', {time: 1000, icon: 1}, function () {
+                                        layer.closeAll();
+                                        $(layero).find("input[type='radio']").prop('checked', false);
+                                    });
+
                                 } else {
                                     layer.msg('设置失败', {time: 1000, icon: 2});
                                 }
