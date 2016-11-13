@@ -177,3 +177,11 @@ ul{
     border: 1px solid transparent;
     line-height: 24px
 }
+
+.setVipContent label {
+    display: inline-block;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 150px;
+    text-align: center;
+}
