@@ -65,7 +65,7 @@ $(function () {
             '        <div class="control-group">' +
             '            <label class="control-label" for="typeahead">广告链接</label>' +
             '            <div class="controls">' +
-            '                <input type="text" id="typeNamearticle" value="' + carouselLink + '"' +
+            '                <input type="text" id="typeNameLink" value="' + carouselLink + '"' +
             'class="span6 typeaheadspan6" data-provide="typeahead" data-items="4">' +
             '            </div>' +
             '        </div>' +
@@ -80,32 +80,30 @@ $(function () {
         var indexEdit = layer.open({
             type: 1,
             skin: 'layui-layer-rim', //加上边框
-            area: ['420px', '380px'], //宽高
+            area: ['420px', '420px'], //宽高
             content: htmlStr,
             btn: ['确定', '取消'],
             success: function (layero, index) {
                 $(layero).find('#uploadNextOk').on('change', imgUpLoad('uploadNextOk'));
             },
             yes: function (index, layero) {
-                var elName = $.trim($('#typeNamearticle').val());
-                var elSrc = $('#showImg').attr('src');
-                var elMarks = $.trim($('#remarksContent').val());
-                if (elName == '' || elSrc == '' || elMarks == '') {
+                var carouselOrder = $.trim($('#typeNamearticle').val());
+                var carouselUrl = $('#showImg').attr('src');
+                var carouselContent = $.trim($('#remarksContent').val());
+                var carouselLink = $.trim($('#typeNameLink').val());
+                if (carouselOrder == '' || carouselUrl == '' || carouselContent == '' || carouselLink == '') {
                     layer.msg('参数不能为空', {time: 1000, icon: 1});
                     return false;
                 }
-                /*http://localhost:8080/webapp/articleType/addArticleType
-                 添加文章类型的参数：
-                 jsonData=｛"articleTypeName":"文章类型名称","articleTypeIcon":"文章类型图标的url","articleTypeRemarks":"文章类型的说明"｝
-                 */
                 var PaginationObj = {
-                    articleTypeName: elName,
-                    articleTypeIcon: elSrc,
-                    articleTypeRemarks: elMarks
+                    carouselOrder: carouselOrder,
+                    carouselUrl: carouselUrl,
+                    carouselContent: carouselContent,
+                    carouselLink: carouselLink
                 };
                 var setObj = JSON.stringify(PaginationObj);
                 $.ajax({
-                    url: 'http://www.gushidianjin.com/webapp/articleType/addArticleType',
+                    url: 'www.gushidianjin.com/webapp/carousel/updateCarluselInfo',
                     type: 'post',
                     dataType: 'json',
                     data: {jsonData: setObj},
@@ -114,10 +112,10 @@ $(function () {
                         if (data.retCode == 1) {
                             var trsPrarent = _this.closest('tr');
                             var Nowtime = moment().format('YYYY-MM-DD HH:MM:SS');
-                            trsPrarent.find('td').eq(0).html(elName);
-                            trsPrarent.find('td').eq(1).find('img').attr('src', elSrc);
-                            trsPrarent.find('td').eq(2).html(elMarks);
-                            trsPrarent.find('td').eq(3).html(Nowtime);
+                            trsPrarent.find('td').eq(0).html(carouselOrder);
+                            trsPrarent.find('td').eq(1).find('img').attr('src', carouselUrl);
+                            trsPrarent.find('td').eq(2).html(carouselLink);
+                            trsPrarent.find('td').eq(3).html(carouselContent);
                             layer.msg('编辑成功', {time: 1000, icon: 1});
                             layer.close(indexEdit);
                         }
@@ -163,20 +161,32 @@ $(function () {
         })
     };
     function addType() {
+        var itLength = $('.htmlTbody>tr').length;
         var htmlStr = ' <div class="form-horizontal" id="typeEditContent">' +
             '        <div class="control-group">' +
-            '            <label class="control-label" for="typeahead">分类名称</label>' +
+            '            <label class="control-label" for="typeahead">广告位置</label>' +
             '            <div class="controls">' +
-            '                <input type="text" id="typeNamearticle" value=""' +
+            '                <input type="text" id="typeNamearticle" placeholder="请添加第' + (Number(itLength) + 1) + '条" value=""' +
             'class="span6 typeaheadspan6" data-provide="typeahead" data-items="4">' +
             '            </div>' +
             '        </div>' +
             '        <div class="control-group">' +
-            '            <label class="control-label" for="fileInput">分类图标</label>' +
+            '            <label class="control-label" for="fileInput">广告图片</label>' +
             '            <div class="controls upload-bg"><!--如果存在这个属性，就是过来的数据--->' +
-            '                <input class="upload fileUpOk" style="display: block" id="fileUpOk" type="file" name="file">' +
+            '                 <input class="upload" id="file" type="file" name="file">' +
             '                <img id="showImg" style="display:none;width:100%;height:100%" alt="" src=""/>' +
+            '                <p class="reupload" style="display: none">' +
+            '                    重新上传' +
+            '                    <input class="imgEditor" id="uploadNextOk" type="file" name="file" value=""/>' +
+            '                </p>' +
             '                <input type="hidden" value="" id="url">' +
+            '            </div>' +
+            '        </div>' +
+            '        <div class="control-group">' +
+            '            <label class="control-label" for="typeahead">广告链接</label>' +
+            '            <div class="controls">' +
+            '                <input type="text" id="typeNameLink" value=""' +
+            '                   class="span6 typeaheadspan6" data-provide="typeahead" data-items="4">' +
             '            </div>' +
             '        </div>' +
             '        <div class="control-group control-group-style-1">' +
@@ -190,39 +200,59 @@ $(function () {
         var indexEdit = layer.open({
             type: 1,
             skin: 'layui-layer-rim', //加上边框
-            area: ['420px', '380px'], //宽高
+            area: ['420px', '420px'], //宽高
             content: htmlStr,
-            btn: ['确定', '取消'],
+            btn: ['添加', '取消'],
+            success: function (layero, index) {
+                $(layero).find('#uploadNextOk').on('change', imgUpLoad('uploadNextOk'));
+                $(layero).find('#file').on('change', imgUpLoad('file'));
+                $(layero).find('.upload-bg').hover(function () {
+                    console.log($(this).find('img').attr('src'));
+                    if ($(this).find('img').attr('src') == '') {
+                        return false;
+                    }
+                    $(this).find('p').show();
+                }, function () {
+                    $(this).find('p').hide();
+                });
+            },
             yes: function (index, layero) {
-                var elName = $.trim($('#typeNamearticle').val());
-                var elSrc = $('#showImg').attr('src');
-                var elMarks = $.trim($('#remarksContent').val());
-                if (elName == '' || elSrc == '' || elMarks == '') {
+                var carouselOrder = $.trim($('#typeNamearticle').val());
+                var carouselUrl = $('#showImg').attr('src');
+                var carouselContent = $.trim($('#remarksContent').val());
+                var carouselLink = $.trim($('#typeNameLink').val());
+                if (carouselOrder == '' || carouselUrl == '' || carouselContent == '' || carouselLink == '') {
                     layer.msg('参数不能为空', {time: 1000, icon: 1});
                     return false;
+                } else {
+                    if (carouselOrder != (Number(itLength) + 1)) {
+                        layer.msg('添加失败，广告位置不是第' + (Number(itLength) + 1) + '条', {time: 1000, icon: 2});
+                        return false;
+                    }
                 }
-                /*http://localhost:8080/webapp/articleType/addArticleType
-                 添加文章类型的参数：
-                 jsonData=｛"articleTypeName":"文章类型名称","articleTypeIcon":"文章类型图标的url","articleTypeRemarks":"文章类型的说明"｝
-                 */
-                var PaginationObj = {articleTypeName: elName, articleTypeIcon: elSrc, articleTypeRemarks: elMarks};
+                var PaginationObj = {
+                    carouselOrder: carouselOrder,
+                    carouselUrl: carouselUrl,
+                    carouselContent: carouselContent,
+                    carouselLink: carouselLink
+                };
                 var setObj = JSON.stringify(PaginationObj);
                 $.ajax({
-                    url: 'http://www.gushidianjin.com/webapp/articleType/addArticleType',
+                    url: 'http://www.gushidianjin.com/webapp/carousel/addCarousel',
                     type: 'post',
                     dataType: 'json',
                     data: {jsonData: setObj},
                     success: function (data) {
                         console.log(data);
                         if (data.retCode == 1) {
+                            getKindsType();
                             layer.msg('添加成功', {time: 1000, icon: 1});
                             layer.close(indexEdit);
-                            getKindsType();
                         }
 
                     }, error: function (data) {
                         layer.msg('添加失败', {time: 1000, icon: 2});
-
+                        layer.close(indexEdit)
                     }
                 })
 
@@ -242,13 +272,12 @@ $(function () {
             done: function (e, data) {
                 var oimage = data,
                     _this = $('#' + eleId);
-                if (eleId == 'fileUpOk') {
+                if (eleId == 'file') {
                     _this.hide();
                     _this.siblings('img').attr('src', oimage.result.url).show();
                 } else {//重新上传
                     _this.parent().siblings('img').attr('src', oimage.result.url);
                 }
-                ;
 
             }
         });
@@ -258,10 +287,6 @@ $(function () {
         editArticleType(this);
 
     });
-    $('body').on('change', '#fileUpOk', function () {
-        imgUpLoad('fileUpOk');
-    });
-
 
 //获取列表
     function getKindsType() {
@@ -293,15 +318,6 @@ $(function () {
 
     };
     getKindsType();
-    $('.upload-bg').hover(function () {
-        console.log($(this).find('img').attr('src'));
-        if ($(this).find('img').attr('src') == undefined) {
-            return false;
-        }
-        $(this).find('p').show();
-    }, function () {
-        $(this).find('p').hide();
-    });
     $('.pull-right').on('click', function () {
         addType();
     })
