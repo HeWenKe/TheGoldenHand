@@ -25,8 +25,6 @@ $(function () {
 //end
 
 //时间filter
-    var dataObj = {};
-
     function editArticleType(articleTypeId, ev) {
         var loading = layer.load(1, {shade: [0.8, '#393D49']}); //0代表加载的风格，支持0-2
         var _this = $(ev);
@@ -46,20 +44,31 @@ $(function () {
                         '                <input type="text" id="typeNamearticle" value="' + dataObj.articleTypeName +'"' +
                         'class="span6 typeaheadspan6" data-provide="typeahead" data-items="4">' +
                         '            </div>' +
-                        '        </div>' +
-                        '        <div class="control-group">' +
-                        '            <label class="control-label" for="fileInput">分类图标</label>' +
-                        '            <div class="controls upload-bg"><!--如果存在这个属性，就是过来的数据--->' +
-                        '                <input class="upload fileUpOk" style="display: none" id="fileUpOk" type="file" name="file">' +
-                        '                <img id="showImg" style="display:block;width:100%;height:100%" alt="" src="' + dataObj.articleTypeIcon + '"/>' +
-                        '                <p class="reupload" style="display: block">' +
-                        '                    重新上传' +
-                        '                    <input class="imgEditor" id="uploadNextOk" type="file" name="file" value=""/>' +
-                        '                </p>' +
-                        '                <input type="hidden" value="" id="url">' +
-                        '            </div>' +
-                        '        </div>' +
-                        '        <div class="control-group control-group-style-1">' +
+                        '        </div>';
+                    if (dataObj.articleTypeIcon == '') {
+                        htmlStr += ' <div  class="controls upload-bg">' + <!---->
+                            '<input class="upload" id="file" type="file" name="file">' +
+                            '<img id="showImg" style="display:none;width:100%;height:100%" src="" alt="" />' +
+                            '<p class="reupload"> 重新上传 <input class="imgEditor" id="uploadNext" type="file" name="file" value=""/></p>' +
+
+                            '<input type="hidden" value="" id="url"></div>';
+                    }
+                    if (dataObj.articleTypeIcon != '') {
+                        htmlStr += '        <div class="control-group">' +
+                            '            <label class="control-label" for="fileInput">分类图标</label>' +
+                            '            <div class="controls upload-bg"><!--如果存在这个属性，就是过来的数据--->' +
+                            '                <input class="upload fileUpOk" style="display: none" id="fileUpOk" type="file" name="file">' +
+                            '                <img id="showImg" style="display:block;width:100%;height:100%" alt="" src="' + dataObj.articleTypeIcon + '"/>' +
+                            '                <p class="reupload" style="display: block">' +
+                            '                    重新上传' +
+                            '                    <input class="imgEditor" id="uploadNextOk" type="file" name="file" value=""/>' +
+                            '                </p>' +
+                            '                <input type="hidden" value="" id="url">' +
+                            '            </div>' +
+                            '        </div>';
+                    }
+
+                    htmlStr += '        <div class="control-group control-group-style-1">' +
                         '            <label class="control-label" for="typeahead">备注</label>' +
                         '            <div class="controls">' +
                         '                <textarea wrap="physical" id="remarksContent" class="span6 typeaheadspan6"' +
@@ -73,6 +82,19 @@ $(function () {
                         area: ['420px', '380px'], //宽高
                         content: htmlStr,
                         btn: ['确定', '取消'],
+                        success: function (layero, index) {
+                            $(layero).find('#fileUpOk').on('change', imgUpLoad('fileUpOk'));
+                            $(layero).find('#uploadNextOk').on('change', imgUpLoad('uploadNextOk'));
+                            $(layero).find('.upload-bg').hover(function () {
+                                console.log($(this).find('img').attr('src'));
+                                if ($(this).find('img').attr('src') == '') {
+                                    return false;
+                                }
+                                $(this).find('p').show();
+                            }, function () {
+                                $(this).find('p').hide();
+                            });
+                        },
                         yes: function (index, layero) {
                             var elName = $.trim($('#typeNamearticle').val());
                             var elSrc = $('#showImg').attr('src');
@@ -129,10 +151,10 @@ $(function () {
             }
         });
     };
-    function isDeleteType(articleTypeId, ev) {
+    function isDeleteType(ev) {
+        var articleTypeId = ev.attr('idnum');
         //删除 http://localhost:8080/webapp/articleType/deleteArticleType?articleTypeId=1470666409979007
-        var _this = $(ev.target);
-        var trsPrarent = _this.closest('tr');
+        var trsPrarent = ev.closest('tr');
         layer.confirm('你确认要删除这条文章类型吗？', {
             btn: ['确认', '取消'] //按钮
         }, function () {
@@ -168,7 +190,11 @@ $(function () {
             '            <label class="control-label" for="fileInput">分类图标</label>' +
             '            <div class="controls upload-bg"><!--如果存在这个属性，就是过来的数据--->' +
             '                <input class="upload fileUpOk" style="display: block" id="fileUpOk" type="file" name="file">' +
-            '                <img id="showImg" style="display:none;width:100%;height:100%" alt="" src=""/>' +
+            '               <img id="showImg" style="display:none;width:100%;height:100%" alt="" src=""/>' +
+            '                <p class="reupload" style="display: none">' +
+            '                    重新上传' +
+            '                    <input class="imgEditor" id="uploadNextOk" type="file" name="file" value=""/>' +
+            '                </p>' +
             '                <input type="hidden" value="" id="url">' +
             '            </div>' +
             '        </div>' +
@@ -186,6 +212,18 @@ $(function () {
             area: ['420px', '380px'], //宽高
             content: htmlStr,
             btn: ['确定', '取消'],
+            success: function (layero, index) {
+                $(layero).find('#fileUpOk').on('change', imgUpLoad('fileUpOk'));
+                $(layero).find('#uploadNextOk').on('change', imgUpLoad('uploadNextOk'));
+                $(layero).find('.upload-bg').hover(function () {
+                    if ($(this).find('img').attr('src') == '') {
+                        return false;
+                    }
+                    $(this).find('p').show();
+                }, function () {
+                    $(this).find('p').hide();
+                });
+            },
             yes: function (index, layero) {
                 var elName = $.trim($('#typeNamearticle').val());
                 var elSrc = $('#showImg').attr('src');
@@ -228,8 +266,6 @@ $(function () {
 
     };
     function imgUpLoad(eleId) {
-        alert(1);
-        console.log($('#' + eleId));
       $('#' + eleId).fileupload({
             autoUpload: true,//自动上传
             url: "http://www.gushidianjin.com/webapp/fileUpload/imgFileUpload",//�ϴ���ַ
@@ -252,15 +288,6 @@ $(function () {
         editArticleType(articleTypeId,this);
 
     });
-    $('body').on('change','#fileUpOk',function(){
-        imgUpLoad('fileUpOk');
-    });
-    $('body').on('change','#uploadNextOk',function(){
-        imgUpLoad('uploadNextOk');
-
-    });
-
-
 //获取列表
     function getKindsType() {
         var loading = layer.load(1, {shade: [0.8, '#393D49']}); //0代表加载的风格，支持0-2
@@ -290,17 +317,13 @@ $(function () {
 
     };
     getKindsType();
-    $('.upload-bg').hover(function () {
-        console.log($(this).find('img').attr('src'));
-        if ($(this).find('img').attr('src') == undefined) {
-            return false;
-        }
-        $(this).find('p').show();
-    }, function () {
-        $(this).find('p').hide();
-    });
+
     $('.pull-right').on('click',function(){
         addType();
+    })
+    $('body').on('click', '.deleteTypeClick', function () {
+        var _this = $(this);
+        isDeleteType(_this);
     })
 
 
