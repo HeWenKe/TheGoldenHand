@@ -90,10 +90,10 @@
                             <div class="sdfsdfsdf clearfix" style="padding:20px;">
                                 <select class="span6 m-wrap" name="category" style="width:200px; float:left; margin-right:10px;">
                                     <option value="">用户属性</option>
-                                    <option value="Category 1">VIP</option>
-                                    <option value="Category 2">普通用户</option>
+                                    <option value="1">VIP</option>
+                                    <option value="0">普通用户</option>
                                 </select>
-                                <button style="float:right" type="submit" class="btn btn-primary">筛选</button>
+                                <button style="float:right" type="submit" class="btn btn-primary" v-on:click="queryArticleList()">筛选</button>
                             </div>                                    
                             <div class="block-content collapse in">
                                 <div class="span12">

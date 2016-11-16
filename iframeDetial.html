@@ -239,8 +239,7 @@
 
                                             <ul id="gupiaolist">
                                                 <li v-for="ele in datas.articleSharesRelations">
-                                                    {{ele.sharesId}} {{ele.sharesName}} <a href="javascript:void(0);"
-                                                                          class="delete">（删除）</a></li>
+                                                    {{ele.sharesId}} {{ele.sharesName}} <a href="javascript:void(0);" class="delete">（删除）</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -348,6 +347,7 @@
         }
     });
     var optionKinds = {};
+    //获取下拉框数据
     getoptionKinds();
     function getoptionKinds() {
         $.ajax({
@@ -442,6 +442,7 @@
     });
     $('#url').val($(this).find('img').attr('src'));
 
+    //查寻股票列表
     $.ajax({
         url: "http://www.gushidianjin.com/webapp/share/queryShares",
         type: 'get',
@@ -497,8 +498,9 @@
             json.article = {};
             json.articleSharesRelations = [];
             var ul = $('#gupiaolist');
+            console.log($('#gupiaolist'));
             var lis=ul.find('li');
-            for (var k = 1; k < lis.length; k++) {
+            for (var k = 0; k < lis.length; k++) {
                 var values =$.trim(lis.eq(k).html()).split(" ");
                 var json1 = {};
                 json1.sharesId = values[0];
@@ -530,7 +532,9 @@
             json.article.articleContent = contentHtml;//文章详情
             json.article.isVipArticle = $('input[name="RadioGroup1"]:checked').val();
             json.article.articleTypeId = $("#select01  option:selected").attr('idNum');
-            var strPath = "www.gushidianjin.com/webapp/article/updateArticleInfo";
+            var PassData = $.extend({}, reSetObj, json.article);
+            json.article = PassData;
+            var strPath = "http://www.gushidianjin.com/webapp/article/updateArticleInfo";
             $.ajax({
                 url: strPath,// 跳转到 action
                 data: {"token": objUrl.token, "jsondata": JSON.stringify(json)},
@@ -545,7 +549,6 @@
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         var obj = window.parent.PaginationObj;
                         window.parent.getTableData(obj);
-                        console.log(obj);
                         parent.layer.close(index);
                     });
                 },

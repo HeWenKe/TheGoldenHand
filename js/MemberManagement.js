@@ -37,7 +37,7 @@ function getTableData(options) {
         url: 'http://www.gushidianjin.com/webapp/user/queryUserInfoList',
         type: 'post',
         async: false,
-        data: jsonDatas,
+        data: {jsonData: jsonDatas},
         dataType: 'json',
         success: function (data) {
             PaginationResult = {};
@@ -263,20 +263,13 @@ var model = new Vue({
             });
         },
         //查询文章列表
-        queryArticleList: function (kinds, isVip) {
+        queryArticleList: function () {
             var that = this;
-            var dataValue = $('#date-range2').val();
-            var dateStart = dataValue.split('~')[0];
-            var dataEnd = dataValue.split('~')[1];
-            that.dataArea = dataValue;
-            console.log(that.dataArea);
+            var isVip = $('select[name="category"]').val();
             var setObj = {
                 pageNo: "1", //页数
                 pageSize: "10", //每页显示条数
-                createDateTimeStart: dateStart, //开始时间
-                createDateTimeEnd: dataEnd,//结束时间
-                articleTypeName: kinds, //文章类型id
-                isVip: isVip //是否vip 1-vip，0-不是vip
+                userType: isVip //是否vip 1-vip，0-不是vip
             };
             getTableData(setObj);
         }

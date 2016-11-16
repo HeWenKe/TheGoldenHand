@@ -103,7 +103,7 @@ $(function () {
                 };
                 var setObj = JSON.stringify(PaginationObj);
                 $.ajax({
-                    url: 'www.gushidianjin.com/webapp/carousel/updateCarluselInfo',
+                    url: 'http://www.gushidianjin.com/webapp/carousel/updateCarluselInfo',
                     type: 'post',
                     dataType: 'json',
                     data: {jsonData: setObj},
@@ -122,7 +122,6 @@ $(function () {
 
                     }, error: function (data) {
                         layer.msg('编辑失败', {time: 1000, icon: 2});
-                        layer.close(loading);
                         layer.close(indexEdit)
                     }
                 })
