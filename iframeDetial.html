@@ -209,13 +209,13 @@
                                             <input class="upload" id="file" type="file" name="file"
                                                    style="display: none">
                                             <img id="showImg" style="display:block;width:100%;height:100%"
-                                                 src="images/2.jpg" alt=""/><!--datas.article.articleCoverUrl-->
+                                                 v-bind:src="datas.article.articleCoverUrl" alt=""/><!--datas.article.articleCoverUrl-->
                                             <p class="reupload">
                                                 重新上传
                                                 <input class="imgEditor" id="uploadNext" type="file" name="file"
                                                        value=""/>
                                             </p>
-                                            <input type="hidden" value="" id="url">
+                                            <input type="hidden" v-bind:value="datas.article.articleCoverUrl" id="url">
                                         </div>
                                     </div>
 
@@ -424,6 +424,8 @@
                 } else {//重新上传
                     _this.parent().siblings('img').attr('src', oimage.result.url);
                 }
+                $('#url').val(oimage.result.url);
+
 
             }
             //上传之前可以执行的
@@ -505,7 +507,6 @@
                 var json1 = {};
                 json1.sharesId = values[0];
                 json1.sharesName = values[1];
-                alert(1);
                 json.articleSharesRelations.push(json1);
             }
 

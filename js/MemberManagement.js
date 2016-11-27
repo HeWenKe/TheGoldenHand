@@ -152,6 +152,7 @@ var model = new Vue({
                     success: function (data) {
                         if (data.retCode == 1) {
                             layer.msg('已删除', {time: 1000, icon: 1});
+                            getTableData(PaginationObj);
                         } else {
                             layer.msg('删除失败', {time: 1000, icon: 1});
                         }
@@ -184,6 +185,7 @@ var model = new Vue({
                     success: function (data) {
                         if (data.retCode == 1) {
                             layer.msg('已取消', {time: 1000, icon: 1});
+                            getTableData(PaginationObj);
                         } else {
                             layer.msg('取消失败', {time: 1000, icon: 1});
                         }
@@ -249,6 +251,7 @@ var model = new Vue({
                                         layer.closeAll();
                                         $(layero).find("input[type='radio']").prop('checked', false);
                                     });
+                                    getTableData(PaginationObj);
 
                                 } else {
                                     layer.msg('设置失败', {time: 1000, icon: 2});

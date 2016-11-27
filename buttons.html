@@ -90,8 +90,8 @@
                             <div class="sdfsdfsdf clearfix" style="padding:20px;">
                                 <select class="span6 m-wrap" name="category" style="width:200px; float:left; margin-right:10px;">
                                     <option value="">用户属性</option>
-                                    <option value="1">VIP</option>
-                                    <option value="0">普通用户</option>
+                                    <option value="2">VIP</option>
+                                    <option value="1">普通用户</option>
                                 </select>
                                 <button style="float:right" type="submit" class="btn btn-primary" v-on:click="queryArticleList()">筛选</button>
                             </div>                                    
@@ -123,16 +123,24 @@
                                             <td>{{el.createDatetime}}</td>
                                             <td v-if="el.isVip==1">否</td>
                                             <td v-if="el.isVip==2">是</td>
-                                            <td>SSSS</td>
-                                            <td>sdddsdsd</td>
-                                            <!--  <td>{{el.liveTime}}</td>
-                                              <td>{{ele.onLineTime}}</td>-->
+                                            <td>{{el.liveTime}}</td>
+                                            <td>{{el.onLineTime}}</td>
                                             <td><a v-if="el.isVip==1" href="javascript:;" v-on:click="setVip(el.telPhone)">设为VIP</a><a
                                                     href="javascript:;" v-if="el.isVip==2" v-on:click="cancelVip(el.telPhone)">取消VIP</a><a
                                                     href="javascript:;" v-on:click="isDelete(el.telPhone)">删除</a></td>
 											</tr>
 										</tbody>
 									</table>
+                                    <div id="pagePagination" class="simple-pagination-pick-page">
+                                        <ul class="clearfix">
+                                            <li class="first-page disabled"><i></i><i></i></li>
+                                            <li class="prev disabled"></li>
+                                            <li class="current-page"><input id="current-page" type="text"></li>
+                                            <li class="total-page">/<span id="total-page">304</span></li>
+                                            <li class="next disabled"></li>
+                                            <li class="last-page disabled"><i></i><i></i></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

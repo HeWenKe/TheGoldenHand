@@ -27,7 +27,7 @@ $(function () {
 //时间filter
     var dataObj = {};
 
-    function editArticleType(ev) {
+    function editArticleType(ev, carouselId) {
         layer.closeAll();
         /* var loading = layer.load(1, {shade: [0.8, '#393D49']}); //0代表加载的风格，支持0-2*/
         var _this = $(ev);
@@ -38,7 +38,7 @@ $(function () {
         //         "carouselLink":"广告链接"
         // }
         var trsPrarent = _this.closest('tr');
-        var Nowtime = moment().format('YYYY-MM-DD HH:MM:SS');
+        //var Nowtime = moment().format('YYYY-MM-DD HH:MM:SS');
         var carouselOrder = trsPrarent.find('td').eq(0).html();
         var carouselUrl = trsPrarent.find('td').eq(1).find('img').attr('src');
         var carouselLink = trsPrarent.find('td').eq(2).html();
@@ -99,7 +99,8 @@ $(function () {
                     carouselOrder: carouselOrder,
                     carouselUrl: carouselUrl,
                     carouselContent: carouselContent,
-                    carouselLink: carouselLink
+                    carouselLink: carouselLink,
+                    carouselId: carouselId
                 };
                 var setObj = JSON.stringify(PaginationObj);
                 $.ajax({
@@ -133,7 +134,8 @@ $(function () {
         });
 
     };
-    function isDeleteType(articleTypeId, ev) {
+    //没有删除功能
+    function isDeleteType(carouselId, ev) {
         //删除 http://localhost:8080/webapp/articleType/deleteArticleType?articleTypeId=1470666409979007
         var _this = $(ev.target);
         var trsPrarent = _this.closest('tr');
@@ -143,7 +145,7 @@ $(function () {
             $.ajax({
                 url: 'http://www.gushidianjin.com/webapp/articleType/deleteArticleType',
                 type: 'post',
-                data: {"articleTypeId": articleTypeId},
+                data: {"carouselId": carouselId},
                 dataType: 'json',
                 success: function (data) {
                     if (data.retCode == 1) {
@@ -282,8 +284,8 @@ $(function () {
         });
     };
     $('body').on('click', '.editTypeClick', function () {
-        var articleTypeId = $(this).attr('idNum');
-        editArticleType(this);
+        var carouselId = $(this).attr('idNum');
+        editArticleType(this, carouselId);
 
     });
 
@@ -304,7 +306,8 @@ $(function () {
                         '<td>' + allData[i].carouselLink + '</td>' +
                         '<td>' + allData[i].carouselContent + '</td>' +
                         '<td>' + moment(allData[i].carouselCreateDate).format('YYYY-MM-DD HH:MM:SS') + '</td>' +
-                        '<td><a idNum=' + allData[i].carouselId + ' class="editTypeClick">编辑</a> <a href="javascript:;" idNum=' + allData[i].carouselId + ' class="deleteTypeClick">删除</a></td> </tr>'
+                        '<td><a idNum=' + allData[i].carouselId + ' class="editTypeClick">编辑</a></td> </tr>';
+                    /*                        '<td><a idNum=' + allData[i].carouselId + ' class="editTypeClick">编辑</a> <a href="javascript:;" idNum=' + allData[i].carouselId + ' class="deleteTypeClick">删除</a></td> */
 
                 }
                 $('.htmlTbody').html(html);
@@ -317,7 +320,7 @@ $(function () {
 
     };
     getKindsType();
-    $('.pull-right').on('click', function () {
+    $('.add-guanggao').on('click', function () {
         addType();
     })
 
