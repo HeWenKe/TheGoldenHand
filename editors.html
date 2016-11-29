@@ -177,6 +177,7 @@
             </div>
             <hr>
             <footer>
+
                 <p>&copy; GSDJ 2016</p>
             </footer>
         </div>
@@ -191,6 +192,29 @@
         <script src="assets/DT_bootstrap.js"></script>
         <script>
         $(function() {
+            var str = "<p><span style=\"color: rgb(255, 192, 0); text-decoration: underline;\">地方都十分</span></p>";
+            str.replace(/\\/g, '');
+            $('footer').append(str);
+            //url参数截取
+            function queryUrlPromete(url) {
+                var url = url || window.location.href;
+                var obj = {};
+                var reg = /([^?&=]+)=([^?&=]+)/g;
+                url.replace(reg, function () {
+                    var arg = arguments;
+                    obj[arg[1]] = arg[2];
+                })
+                return obj;
+
+            }
+
+            var urlObj = queryUrlPromete();
+            var token = urlObj.token;
+            $.each($('#sidebar').find('a'), function (i, n) {
+                var url = $(this).attr('href');
+                $(this).attr('href', url + '?token=' + token);
+
+            });
             
         });
         </script>
