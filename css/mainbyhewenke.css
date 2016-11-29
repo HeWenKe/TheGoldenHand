@@ -185,3 +185,8 @@ ul{
     width: 150px;
     text-align: center;
 }
+
+td .member-img {
+    width: 80px;
+    height: 80px;
+}

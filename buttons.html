@@ -119,7 +119,7 @@
                                         <tr class="odd gradeX" v-for="el in datas">
                                             <td>{{el.telPhone}}</td>
                                             <td>{{el.username}}</td>
-                                            <td><img v-bind:src="el.headPicUrl" alt=""></td>
+                                            <td><img class="member-img" v-bind:src="el.headPicUrl" alt=""></td>
                                             <td>{{el.createDatetime}}</td>
                                             <td v-if="el.isVip==1">否</td>
                                             <td v-if="el.isVip==2">是</td>

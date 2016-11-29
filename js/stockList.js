@@ -134,9 +134,9 @@ var model = new Vue({
     el: '#contentList',
     data: {
         datas: {},
-        sharesCode:'wqwq',
-        sharesPy:'123',
-        sharesName:'123',
+        sharesCode: '',
+        sharesPy: '',
+        sharesName: '',
     },
     methods: {
         //删除

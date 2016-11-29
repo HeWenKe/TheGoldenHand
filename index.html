@@ -404,7 +404,7 @@
         });
         $('#select01').change(function(){
             var oVal=$(this).find("option:selected").text();
-            if(oVal=='每日内参'){
+            if (oVal == '今日内参') {
                 $('.control-group-style-1').show();
             }else{
                 $('.control-group-style-1').hide();
@@ -456,7 +456,7 @@
             json.article.articleCoverUrl = $('#url').val();
             json.article.kind=1;
             //获取富文本编辑器的文章内容
-            var contentHtml=ue.getContentTxt();
+            var contentHtml = ue.getContent();
 
             json.article.articleContent = contentHtml;//文章详情
             json.article.isVipArticle = $('input[name="RadioGroup1"]:checked').val();
@@ -474,10 +474,9 @@
                 cache:false,
                 dataType:'json',
                 success:function(data) {
-                    alert("添加成功！");
-                    alert(data.retContent);
+
                     var token = data.retContent;
-                    window.location.href="calendar.html?token=" + token;
+                    //  window.location.href="calendar.html?token=" + token;
                 },
                 error : function() {
                     // view("异常！");    
