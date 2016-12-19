@@ -227,8 +227,9 @@
                                     <div class="control-group">
                                         <label class="control-label" for="optionsCheckbox">文章属性</label>
                                         <div class="controls">
-                                            <label style="float:left"><input type="radio" name="RadioGroup1" value="1" id="vip">  设为VIP</label>
-                                            <label style="float:left;margin-left: 20px; "><input type="radio" name="RadioGroup1" value="0" id="no_vip">  公开</label>
+                                            <label style="float:left"><input type="radio" name="RadioGroup1" value="0" id="vip"> 设为VIP</label>
+                                            <label style="float:left;margin-left: 20px; "><input type="radio" name="RadioGroup1" value="1"
+                                                                                                 id="no_vip"> 公开</label>
                                         </div>
                                     </div>
                                     <div class="form-actions">
@@ -438,7 +439,7 @@
 
             //获取被选中的所属栏目
             var str = jQuery("#select01  option:selected").text();
-            if(str == "每日内参"){
+            if (str == "今日内参") {
                 console.log("true");
                 //alert(str);
                 json.dayReference = {};
@@ -460,6 +461,7 @@
 
             json.article.articleContent = contentHtml;//文章详情
             json.article.isVipArticle = $('input[name="RadioGroup1"]:checked').val();
+            alert(json.article.isVipArticle);
             json.article.articleTypeId=jQuery("#select01  option:selected").val();
 
             console.log(JSON.stringify(json));
