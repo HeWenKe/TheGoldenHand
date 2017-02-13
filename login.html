@@ -30,27 +30,31 @@
             var userName = $.trim($('#usernmae').val());
             var passWord = $.trim($('#password').val());
             if(passWord!=''&&userName!=''){
-                $.ajax({
-                    type: 'post',
-                    url: 'http://www.gushidianjin.com/webapp/admin/adminLogin?username=admin&password=admin',
-                    date:{username:userName,password:passWord},
-                    success: function (data) {
-                        var data=JSON.parse(data);
-                        console.log(data.retContent);
-                        var mainId= data.retContent.mainId;
-                        var token=data.retContent.token;
-                        if(data.retMessage=='ok'&&data.retCode==1){
-                            window.location.href ='index.html?mainId='+mainId+'&token='+token;
-                        }else{
+                if (userName == 'admin' && passWord == 'admin') {
+                    $.ajax({
+                        type: 'post',
+                        url: 'http://www.gushidianjin.com/webapp/admin/adminLogin?username=' + userName + '&password=' + passWord,
+                        date: {username: userName, password: passWord},
+                        success: function (data) {
+                            var data = JSON.parse(data);
+                            console.log(data.retContent);
+                            var mainId = data.retContent.mainId;
+                            var token = data.retContent.token;
+                            if (data.retMessage == 'ok' && data.retCode == 1) {
+                                window.location.href = 'index.html?mainId=' + mainId + '&token=' + token;
+                            } else {
+                                alert('登陆失败');
+                            }
+                        },
+                        error: function (eror) {
+                            console.log(eror);
                             alert('登陆失败');
                         }
-                    },
-                    error: function (eror) {
-                        console.log(eror);
-                        alert('登陆失败');
-                    }
 
-                })
+                    })
+                } else {
+                    alert('用户名或者密码错误！');
+                }
             }else{
                 alert('用户名或者密码不能为空！');
             }

@@ -207,7 +207,7 @@ var model = new Vue({
             var that = this;
             /*http://www.gushidianjin.com/webapp/vipPackage/queryPackageList*/
             $.ajax({
-                url: 'http://www.gushidianjin.com/webapp/vipPackage/queryPackageList',
+                url: 'http://www.gushidianjin.com/webapp/vipPackage/msQueryPackageList',
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
